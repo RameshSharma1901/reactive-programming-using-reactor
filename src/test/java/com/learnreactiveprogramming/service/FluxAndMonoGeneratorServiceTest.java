@@ -44,4 +44,21 @@ public class FluxAndMonoGeneratorServiceTest {
                 .verifyComplete();
     }
 
+    @Test
+    void testNameMonoMap() {
+        var namesMono = fluxAndMonoGeneratorService.namesMonoMap();
+
+        StepVerifier.create(namesMono)
+                .expectNext("ALEX")
+                .verifyComplete();
+    }
+
+    @Test
+    void testNameFluxFlatMap() {
+        var namesFluxFlatMap = fluxAndMonoGeneratorService.namesFluxFlatMap();
+
+        StepVerifier.create(namesFluxFlatMap)
+                .expectNext("r", "a","m","e","s","h","s","h","a","r","m","a")
+                .verifyComplete();
+    }
 }

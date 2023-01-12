@@ -29,4 +29,19 @@ public class FluxAndMonoGeneratorService {
                 .map(String::toUpperCase)
                 .log();
     }
+
+    public Mono<String> namesMonoMap(){
+        return Mono.just("alex")
+                .map(String::toUpperCase);
+    }
+
+    public Flux<String> namesFluxFlatMap(){
+        return Flux.fromIterable(List.of("ramesh","sharma"))
+                .flatMap(this::splitString);
+    }
+
+    private Flux<String> splitString(String name){
+        return Flux.fromArray(name.split(""));
+    }
+
 }
