@@ -107,4 +107,22 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("harshal")
                 .verifyComplete();
     }
+
+    @Test
+    void testConcatWithExample() {
+        var namesFluxConcatWith = fluxAndMonoGeneratorService.concatWithExample();
+
+        StepVerifier.create(namesFluxConcatWith)
+                .expectNext("ramesh", "sharma")
+                .verifyComplete();
+    }
+
+    @Test
+    void testMergeWithExample() {
+        var namesFluxMergeWith = fluxAndMonoGeneratorService.mergeWithExample();
+
+        StepVerifier.create(namesFluxMergeWith)
+                .expectNext("sharma", "ramesh")
+                .verifyComplete();
+    }
 }

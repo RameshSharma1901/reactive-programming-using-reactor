@@ -79,6 +79,20 @@ public class FluxAndMonoGeneratorService {
                 .switchIfEmpty(Flux.just("harshal"))
                 .log();
     }
+
+    public Flux<String> concatWithExample(){
+        Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
+        Mono<String> nameMonoTwo = Mono.just("sharma");
+
+        return nameMonoOne.concatWith(nameMonoTwo).log();
+    }
+
+    public Flux<String> mergeWithExample(){
+        Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
+        Mono<String> nameMonoTwo = Mono.just("sharma");
+
+        return nameMonoOne.mergeWith(nameMonoTwo).log();
+    }
     private Flux<String> splitString(String name){
 
         return Flux.fromArray(name.split("")).delayElements(Duration.ofSeconds(1));
