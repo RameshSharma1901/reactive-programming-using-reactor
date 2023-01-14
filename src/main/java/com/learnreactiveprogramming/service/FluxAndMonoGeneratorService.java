@@ -3,11 +3,14 @@ package com.learnreactiveprogramming.service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.Random;
 
 import static com.learnreactiveprogramming.util.CommonUtil.delay;
 
 public class FluxAndMonoGeneratorService {
+    Random random = new Random(10);
 
     public Flux<String> namesFlux(){
         return Flux.fromIterable(List.of("Ramesh", "Parth", "Pritesh")).log();
@@ -40,8 +43,30 @@ public class FluxAndMonoGeneratorService {
                 .flatMap(this::splitString);
     }
 
+    public Flux<String> namesFluxFlatMapAsync(){
+        return Flux.fromIterable(List.of("ramesh","sharma"))
+                .flatMap(this::splitString)
+                .log();
+    }
+
+    /**
+     * Difference between flatMap, concatMap and flatMapSequential
+     * <a href="https://stackoverflow.com/questions/71971062/whats-the-difference-between-flatmap-flatmapsequential-and-concatmap-in-project">...</a>
+     */
+    public Flux<String> namesFluxConcatMap(){
+        return Flux.fromIterable(List.of("ramesh","sharma"))
+                .concatMap(this::splitString)
+                .log();
+    }
+
+    public Flux<String> namesFluxFlatMapSequential(){
+        return Flux.fromIterable(List.of("ramesh","sharma"))
+                .flatMapSequential(this::splitString)
+                .log();
+    }
     private Flux<String> splitString(String name){
-        return Flux.fromArray(name.split(""));
+
+        return Flux.fromArray(name.split("")).delayElements(Duration.ofSeconds(1));
     }
 
 }
