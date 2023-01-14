@@ -89,4 +89,22 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("r", "a","m","e","s","h","s","h","a","r","m","a")
                 .verifyComplete();
     }
+
+    @Test
+    void testDefaultIfEmptyExample() {
+        var namesFluxFlatMap = fluxAndMonoGeneratorService.defaultIfEmptyExample();
+
+        StepVerifier.create(namesFluxFlatMap)
+                .expectNext("harshal")
+                .verifyComplete();
+    }
+
+    @Test
+    void testSwitchIfEmptyExample() {
+        var namesFluxFlatMap = fluxAndMonoGeneratorService.switchIfEmptyExample();
+
+        StepVerifier.create(namesFluxFlatMap)
+                .expectNext("harshal")
+                .verifyComplete();
+    }
 }

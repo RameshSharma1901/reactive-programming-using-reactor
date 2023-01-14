@@ -6,6 +6,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 import static com.learnreactiveprogramming.util.CommonUtil.delay;
 
@@ -62,6 +63,20 @@ public class FluxAndMonoGeneratorService {
     public Flux<String> namesFluxFlatMapSequential(){
         return Flux.fromIterable(List.of("ramesh","sharma"))
                 .flatMapSequential(this::splitString)
+                .log();
+    }
+
+    public Flux<String> defaultIfEmptyExample(){
+        return Flux.fromIterable(List.of("ramesh","sharma"))
+                .filter(s -> s.length() > 6)
+                .defaultIfEmpty("harshal")
+                .log();
+    }
+
+    public Flux<String> switchIfEmptyExample(){
+        return Flux.fromIterable(List.of("ramesh","sharma"))
+                .filter(s -> s.length() > 6)
+                .switchIfEmpty(Flux.just("harshal"))
                 .log();
     }
     private Flux<String> splitString(String name){
