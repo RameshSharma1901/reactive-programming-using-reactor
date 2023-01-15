@@ -66,13 +66,15 @@ public class FluxAndMonoGeneratorService {
                 .log();
     }
 
+    /**
+     * defaultIfEmpty and switchIfEmpty Example
+     */
     public Flux<String> defaultIfEmptyExample(){
         return Flux.fromIterable(List.of("ramesh","sharma"))
                 .filter(s -> s.length() > 6)
                 .defaultIfEmpty("harshal")
                 .log();
     }
-
     public Flux<String> switchIfEmptyExample(){
         return Flux.fromIterable(List.of("ramesh","sharma"))
                 .filter(s -> s.length() > 6)
@@ -80,13 +82,15 @@ public class FluxAndMonoGeneratorService {
                 .log();
     }
 
+    /**
+     * concat and concatWith with Examples
+     */
     public Flux<String> concatExample(){
         var namesFluxOne = Flux.just("ramesh").delayElements(Duration.ofSeconds(2));
         var namesFluxTwo = Flux.just("sharma");
 
         return Flux.concat(namesFluxOne, namesFluxTwo);
     }
-
     public Flux<String> concatWithExample(){
         Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
         Mono<String> nameMonoTwo = Mono.just("sharma");
@@ -94,6 +98,9 @@ public class FluxAndMonoGeneratorService {
         return nameMonoOne.concatWith(nameMonoTwo).log();
     }
 
+    /**
+     * merge and mergeWith Examples
+     */
     public Flux<String> mergeExample(){
         Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
         Mono<String> nameMonoTwo = Mono.just("sharma");
@@ -107,7 +114,26 @@ public class FluxAndMonoGeneratorService {
         return nameMonoOne.mergeWith(nameMonoTwo).log();
     }
 
+    /**
+     * zip and zipWith Examples
+     * @return Mono<String>
+     */
+    public Mono<String> zipExample(){
+        Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
+        Mono<String> nameMonoTwo = Mono.just("sharma");
+        Mono<String> nameMonoThree = Mono.just("amarchand");
 
+        return Mono.zip(nameMonoOne, nameMonoTwo, nameMonoThree)
+                .map(tuple -> tuple.getT1() + tuple.getT3() + tuple.getT2())
+                .log();
+    }
+
+    public Mono<String> zipWithExample(){
+        Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
+        Mono<String> nameMonoTwo = Mono.just("sharma");
+
+        return nameMonoOne.zipWith(nameMonoTwo, (s1, s2) -> s1 + s2);
+    }
     private Flux<String> splitString(String name){
 
         return Flux.fromArray(name.split("")).delayElements(Duration.ofSeconds(1));

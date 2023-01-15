@@ -142,4 +142,20 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("sharma", "ramesh")
                 .verifyComplete();
     }
+    @Test
+    void testZipExample() {
+        var nameMonoZip = fluxAndMonoGeneratorService.zipExample();
+
+        StepVerifier.create(nameMonoZip)
+                .expectNext("rameshamarchandsharma")
+                .verifyComplete();
+    }
+    @Test
+    void testZipWithExample() {
+        var nameMonoZip = fluxAndMonoGeneratorService.zipWithExample();
+
+        StepVerifier.create(nameMonoZip)
+                .expectNext("rameshsharma")
+                .verifyComplete();
+    }
 }
