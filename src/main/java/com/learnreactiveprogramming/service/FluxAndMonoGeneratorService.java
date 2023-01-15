@@ -96,7 +96,7 @@ public class FluxAndMonoGeneratorService {
     }
 
     /**
-     * merge and mergeWith Examples
+     * merge, mergeWith and mergeSequential Examples
      */
     public Flux<String> mergeExample(){
         Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
@@ -110,6 +110,13 @@ public class FluxAndMonoGeneratorService {
 
         return nameMonoOne.mergeWith(nameMonoTwo).log();
     }
+    public Flux<String> mergeSequentialExample(){
+        Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
+        Mono<String> nameMonoTwo = Mono.just("sharma");
+
+        return Flux.mergeSequential(nameMonoOne, nameMonoTwo).log();
+    }
+
 
     /**
      * zip and zipWith Examples

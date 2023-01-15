@@ -143,6 +143,14 @@ public class FluxAndMonoGeneratorServiceTest {
                 .verifyComplete();
     }
     @Test
+    void testMergeSequentialExample() {
+        var namesFluxMergeWith = fluxAndMonoGeneratorService.mergeSequentialExample();
+
+        StepVerifier.create(namesFluxMergeWith)
+                .expectNext("ramesh", "sharma")
+                .verifyComplete();
+    }
+    @Test
     void testZipExample() {
         var nameMonoZip = fluxAndMonoGeneratorService.zipMonoExample();
 
