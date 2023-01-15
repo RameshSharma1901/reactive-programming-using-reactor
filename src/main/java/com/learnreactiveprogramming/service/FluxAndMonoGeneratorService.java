@@ -6,9 +6,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
-
-import static com.learnreactiveprogramming.util.CommonUtil.delay;
 
 public class FluxAndMonoGeneratorService {
     Random random = new Random(10);
@@ -118,7 +115,7 @@ public class FluxAndMonoGeneratorService {
      * zip and zipWith Examples
      * @return Mono<String>
      */
-    public Mono<String> zipExample(){
+    public Mono<String> zipMonoExample(){
         Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
         Mono<String> nameMonoTwo = Mono.just("sharma");
         Mono<String> nameMonoThree = Mono.just("amarchand");
@@ -128,12 +125,30 @@ public class FluxAndMonoGeneratorService {
                 .log();
     }
 
-    public Mono<String> zipWithExample(){
+    public Flux<String> zipFluxExample(){
+        Flux<String> namesFluxOne = Flux.just("ram", "sha");
+        Flux<String> namesFluxTwo = Flux.just("esh","rma");
+
+        return Flux.zip(namesFluxOne, namesFluxTwo)
+                .map(tuple -> tuple.getT1() + tuple.getT2())
+                .log();
+    }
+
+    public Mono<String> zipWithMonoExample(){
         Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
         Mono<String> nameMonoTwo = Mono.just("sharma");
 
         return nameMonoOne.zipWith(nameMonoTwo, (s1, s2) -> s1 + s2);
     }
+
+    public Flux<String> zipWithFluxExample(){
+        Flux<String> namesFluxOne = Flux.just("ram", "sha").delayElements(Duration.ofSeconds(2));
+        Flux<String> namesFluxTwo = Flux.just("esh","rma");
+
+        return namesFluxOne.zipWith(namesFluxTwo, (s1,s2)-> s1+s2)
+                .log();
+    }
+
     private Flux<String> splitString(String name){
 
         return Flux.fromArray(name.split("")).delayElements(Duration.ofSeconds(1));

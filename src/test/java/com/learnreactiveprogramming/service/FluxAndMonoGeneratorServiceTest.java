@@ -144,7 +144,7 @@ public class FluxAndMonoGeneratorServiceTest {
     }
     @Test
     void testZipExample() {
-        var nameMonoZip = fluxAndMonoGeneratorService.zipExample();
+        var nameMonoZip = fluxAndMonoGeneratorService.zipMonoExample();
 
         StepVerifier.create(nameMonoZip)
                 .expectNext("rameshamarchandsharma")
@@ -152,10 +152,27 @@ public class FluxAndMonoGeneratorServiceTest {
     }
     @Test
     void testZipWithExample() {
-        var nameMonoZip = fluxAndMonoGeneratorService.zipWithExample();
+        var nameMonoZip = fluxAndMonoGeneratorService.zipWithMonoExample();
 
         StepVerifier.create(nameMonoZip)
                 .expectNext("rameshsharma")
+                .verifyComplete();
+    }
+
+    @Test
+    void testZipFluxExample() {
+        var zippedNamesFlux = fluxAndMonoGeneratorService.zipFluxExample();
+
+        StepVerifier.create(zippedNamesFlux)
+                .expectNext("ramesh", "sharma")
+                .verifyComplete();
+    }
+    @Test
+    void testZipWithFluxExample() {
+        var zippedNamesFlux = fluxAndMonoGeneratorService.zipWithFluxExample();
+
+        StepVerifier.create(zippedNamesFlux)
+                .expectNext("ramesh", "sharma")
                 .verifyComplete();
     }
 }
