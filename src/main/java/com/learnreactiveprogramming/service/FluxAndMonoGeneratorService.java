@@ -80,6 +80,13 @@ public class FluxAndMonoGeneratorService {
                 .log();
     }
 
+    public Flux<String> concatExample(){
+        var namesFluxOne = Flux.just("ramesh").delayElements(Duration.ofSeconds(2));
+        var namesFluxTwo = Flux.just("sharma");
+
+        return Flux.concat(namesFluxOne, namesFluxTwo);
+    }
+
     public Flux<String> concatWithExample(){
         Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
         Mono<String> nameMonoTwo = Mono.just("sharma");
@@ -87,12 +94,20 @@ public class FluxAndMonoGeneratorService {
         return nameMonoOne.concatWith(nameMonoTwo).log();
     }
 
+    public Flux<String> mergeExample(){
+        Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
+        Mono<String> nameMonoTwo = Mono.just("sharma");
+
+        return Flux.merge(nameMonoOne, nameMonoTwo).log();
+    }
     public Flux<String> mergeWithExample(){
         Mono<String> nameMonoOne = Mono.just("ramesh").delayElement(Duration.ofSeconds(2));
         Mono<String> nameMonoTwo = Mono.just("sharma");
 
         return nameMonoOne.mergeWith(nameMonoTwo).log();
     }
+
+
     private Flux<String> splitString(String name){
 
         return Flux.fromArray(name.split("")).delayElements(Duration.ofSeconds(1));
