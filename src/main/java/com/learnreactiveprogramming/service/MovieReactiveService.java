@@ -26,11 +26,19 @@ public class MovieReactiveService {
         });
     }
 
-    public Mono<Movie> getMovieById(long movieId){
+    public Mono<Movie> getMovieByIdV1(long movieId){
         return movieInfoService.retrieveMovieInfoMonoUsingId(movieId)
                 .flatMap(movieInfo -> {
                     Mono<List<Review>> reviewsMono = reviewService.retrieveReviewsFlux(movieInfo.getMovieInfoId()).collectList();
                     return reviewsMono.map(reviews -> new Movie(movieInfo, reviews));
                 });
+    }
+
+    public Mono<Movie> getMovieByIdV2(long movieId){
+        Mono<MovieInfo> movieInfoMono =
+                movieInfoService.retrieveMovieInfoMonoUsingId(movieId);
+        Flux<Review> reviewFlux = reviewService.retrieveReviewsFlux(movieId);
+        Mono<List<Review>> listReviewMono = reviewFlux.collectList();
+        return movieInfoMono.zipWith(listReviewMono, Movie::new);
     }
 }

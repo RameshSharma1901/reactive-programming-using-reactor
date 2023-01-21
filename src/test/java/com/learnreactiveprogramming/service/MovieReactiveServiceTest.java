@@ -30,9 +30,19 @@ class MovieReactiveServiceTest {
     }
 
     @Test
-    void getMovieById() {
+    void getMovieById_usingFlatMap() {
 
-        StepVerifier.create(movieReactiveService.getMovieById(102))
+        StepVerifier.create(movieReactiveService.getMovieByIdV1(102))
+                .assertNext(movie -> {
+                    assertEquals("Batman Begins", movie.getMovie().getName());
+                    assertEquals(2, movie.getReviewList().size());
+                }).verifyComplete();
+    }
+
+    @Test
+    void getMovieById_usingZipWith() {
+
+        StepVerifier.create(movieReactiveService.getMovieByIdV2(102))
                 .assertNext(movie -> {
                     assertEquals("Batman Begins", movie.getMovie().getName());
                     assertEquals(2, movie.getReviewList().size());
