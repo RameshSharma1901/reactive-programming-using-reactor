@@ -7,7 +7,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 
-public class FluxAndMonoGeneratorService {
+public class FluxAndMonoOperatorsExample {
     Random random = new Random(10);
 
     public Flux<String> namesFlux(){
@@ -153,6 +153,13 @@ public class FluxAndMonoGeneratorService {
         Flux<String> namesFluxTwo = Flux.just("esh","rma");
 
         return namesFluxOne.zipWith(namesFluxTwo, (s1,s2)-> s1+s2)
+                .log();
+    }
+
+    public Flux<String> onErrorReturn(){
+        return Flux.fromIterable(List.of("A","B","C"))
+                .concatWith(Mono.error(new RuntimeException()))
+                .onErrorReturn("D")
                 .log();
     }
 

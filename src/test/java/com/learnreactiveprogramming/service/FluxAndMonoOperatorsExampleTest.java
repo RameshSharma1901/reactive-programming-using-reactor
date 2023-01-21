@@ -3,12 +3,12 @@ package com.learnreactiveprogramming.service;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-public class FluxAndMonoGeneratorServiceTest {
-    FluxAndMonoGeneratorService fluxAndMonoGeneratorService = new FluxAndMonoGeneratorService();
+public class FluxAndMonoOperatorsExampleTest {
+    FluxAndMonoOperatorsExample fluxAndMonoOperatorsExample = new FluxAndMonoOperatorsExample();
 
     @Test
     void testNameFlux() {
-        var namesFlux = fluxAndMonoGeneratorService.namesFlux();
+        var namesFlux = fluxAndMonoOperatorsExample.namesFlux();
 
         StepVerifier.create(namesFlux)
                 .expectNext("Ramesh", "Parth", "Pritesh")
@@ -21,14 +21,14 @@ public class FluxAndMonoGeneratorServiceTest {
     @Test
     void testNameMono() {
 
-        StepVerifier.create(fluxAndMonoGeneratorService.namesMono())
+        StepVerifier.create(fluxAndMonoOperatorsExample.namesMono())
                 .expectNext("Pranav")
                 .verifyComplete();
     }
 
     @Test
     void testNameFluxMap() {
-        var namesFlux = fluxAndMonoGeneratorService.namesFluxMap();
+        var namesFlux = fluxAndMonoOperatorsExample.namesFluxMap();
 
         StepVerifier.create(namesFlux)
                 .expectNext("RAMESH", "PARTH", "PRITESH")
@@ -37,7 +37,7 @@ public class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void testNameFluxFilter() {
-        var namesFlux = fluxAndMonoGeneratorService.namesFluxFilter(5);
+        var namesFlux = fluxAndMonoOperatorsExample.namesFluxFilter(5);
 
         StepVerifier.create(namesFlux)
                 .expectNext("RAMESH", "PRITESH")
@@ -46,7 +46,7 @@ public class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void testNameMonoMap() {
-        var namesMono = fluxAndMonoGeneratorService.namesMonoMap();
+        var namesMono = fluxAndMonoOperatorsExample.namesMonoMap();
 
         StepVerifier.create(namesMono)
                 .expectNext("ALEX")
@@ -55,7 +55,7 @@ public class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void testNameFluxFlatMap() {
-        var namesFluxFlatMap = fluxAndMonoGeneratorService.namesFluxFlatMap();
+        var namesFluxFlatMap = fluxAndMonoOperatorsExample.namesFluxFlatMap();
 
         StepVerifier.create(namesFluxFlatMap)
                 .expectNext("r", "a","m","e","s","h","s","h","a","r","m","a")
@@ -64,7 +64,7 @@ public class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void testNameFluxFlatMapAsync() {
-        var namesFluxFlatMap = fluxAndMonoGeneratorService.namesFluxFlatMapAsync();
+        var namesFluxFlatMap = fluxAndMonoOperatorsExample.namesFluxFlatMapAsync();
 
         StepVerifier.create(namesFluxFlatMap)
                 .expectNextCount(12)
@@ -74,7 +74,7 @@ public class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void testNameFluxConcatMap() {
-        var namesFluxFlatMap = fluxAndMonoGeneratorService.namesFluxConcatMap();
+        var namesFluxFlatMap = fluxAndMonoOperatorsExample.namesFluxConcatMap();
 
         StepVerifier.create(namesFluxFlatMap)
                 .expectNext("r", "a","m","e","s","h","s","h","a","r","m","a")
@@ -83,7 +83,7 @@ public class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void testNameFluxFlatMapSequential() {
-        var namesFluxFlatMap = fluxAndMonoGeneratorService.namesFluxFlatMapSequential();
+        var namesFluxFlatMap = fluxAndMonoOperatorsExample.namesFluxFlatMapSequential();
 
         StepVerifier.create(namesFluxFlatMap)
                 .expectNext("r", "a","m","e","s","h","s","h","a","r","m","a")
@@ -92,7 +92,7 @@ public class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void testDefaultIfEmptyExample() {
-        var namesFluxFlatMap = fluxAndMonoGeneratorService.defaultIfEmptyExample();
+        var namesFluxFlatMap = fluxAndMonoOperatorsExample.defaultIfEmptyExample();
 
         StepVerifier.create(namesFluxFlatMap)
                 .expectNext("harshal")
@@ -101,7 +101,7 @@ public class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void testSwitchIfEmptyExample() {
-        var namesFluxFlatMap = fluxAndMonoGeneratorService.switchIfEmptyExample();
+        var namesFluxFlatMap = fluxAndMonoOperatorsExample.switchIfEmptyExample();
 
         StepVerifier.create(namesFluxFlatMap)
                 .expectNext("harshal")
@@ -110,7 +110,7 @@ public class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void testConcatExample() {
-        var namesFluxConcat = fluxAndMonoGeneratorService.concatExample();
+        var namesFluxConcat = fluxAndMonoOperatorsExample.concatExample();
 
         StepVerifier.create(namesFluxConcat)
                 .expectNext("ramesh", "sharma")
@@ -118,7 +118,7 @@ public class FluxAndMonoGeneratorServiceTest {
     }
     @Test
     void testConcatWithExample() {
-        var namesFluxConcatWith = fluxAndMonoGeneratorService.concatWithExample();
+        var namesFluxConcatWith = fluxAndMonoOperatorsExample.concatWithExample();
 
         StepVerifier.create(namesFluxConcatWith)
                 .expectNext("ramesh", "sharma")
@@ -127,7 +127,7 @@ public class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void testMergeExample() {
-        var namesFluxMerge = fluxAndMonoGeneratorService.mergeExample();
+        var namesFluxMerge = fluxAndMonoOperatorsExample.mergeExample();
 
         StepVerifier.create(namesFluxMerge)
                 .expectNext("sharma", "ramesh")
@@ -136,7 +136,7 @@ public class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void testMergeWithExample() {
-        var namesFluxMergeWith = fluxAndMonoGeneratorService.mergeWithExample();
+        var namesFluxMergeWith = fluxAndMonoOperatorsExample.mergeWithExample();
 
         StepVerifier.create(namesFluxMergeWith)
                 .expectNext("sharma", "ramesh")
@@ -144,7 +144,7 @@ public class FluxAndMonoGeneratorServiceTest {
     }
     @Test
     void testMergeSequentialExample() {
-        var namesFluxMergeWith = fluxAndMonoGeneratorService.mergeSequentialExample();
+        var namesFluxMergeWith = fluxAndMonoOperatorsExample.mergeSequentialExample();
 
         StepVerifier.create(namesFluxMergeWith)
                 .expectNext("ramesh", "sharma")
@@ -152,7 +152,7 @@ public class FluxAndMonoGeneratorServiceTest {
     }
     @Test
     void testZipExample() {
-        var nameMonoZip = fluxAndMonoGeneratorService.zipMonoExample();
+        var nameMonoZip = fluxAndMonoOperatorsExample.zipMonoExample();
 
         StepVerifier.create(nameMonoZip)
                 .expectNext("rameshamarchandsharma")
@@ -160,7 +160,7 @@ public class FluxAndMonoGeneratorServiceTest {
     }
     @Test
     void testZipWithExample() {
-        var nameMonoZip = fluxAndMonoGeneratorService.zipWithMonoExample();
+        var nameMonoZip = fluxAndMonoOperatorsExample.zipWithMonoExample();
 
         StepVerifier.create(nameMonoZip)
                 .expectNext("rameshsharma")
@@ -169,7 +169,7 @@ public class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void testZipFluxExample() {
-        var zippedNamesFlux = fluxAndMonoGeneratorService.zipFluxExample();
+        var zippedNamesFlux = fluxAndMonoOperatorsExample.zipFluxExample();
 
         StepVerifier.create(zippedNamesFlux)
                 .expectNext("ramesh", "sharma")
@@ -177,10 +177,20 @@ public class FluxAndMonoGeneratorServiceTest {
     }
     @Test
     void testZipWithFluxExample() {
-        var zippedNamesFlux = fluxAndMonoGeneratorService.zipWithFluxExample();
+        var zippedNamesFlux = fluxAndMonoOperatorsExample.zipWithFluxExample();
 
         StepVerifier.create(zippedNamesFlux)
                 .expectNext("ramesh", "sharma")
                 .verifyComplete();
+    }
+
+    @Test
+    void testOnErrorReturn() {
+        var onErrorReturnFlux = fluxAndMonoOperatorsExample.onErrorReturn();
+
+        StepVerifier.create(onErrorReturnFlux)
+                .expectNext("A", "B", "C", "D")
+                .verifyComplete();
+
     }
 }
