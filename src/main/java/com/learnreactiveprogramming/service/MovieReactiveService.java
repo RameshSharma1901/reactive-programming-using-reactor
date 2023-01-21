@@ -25,4 +25,12 @@ public class MovieReactiveService {
                     return monoReviewList.map(reviews -> new Movie(movieInfo, reviews));
         });
     }
+
+    public Mono<Movie> getMovieById(long movieId){
+        return movieInfoService.retrieveMovieInfoMonoUsingId(movieId)
+                .flatMap(movieInfo -> {
+                    Mono<List<Review>> reviewsMono = reviewService.retrieveReviewsFlux(movieInfo.getMovieInfoId()).collectList();
+                    return reviewsMono.map(reviews -> new Movie(movieInfo, reviews));
+                });
+    }
 }
