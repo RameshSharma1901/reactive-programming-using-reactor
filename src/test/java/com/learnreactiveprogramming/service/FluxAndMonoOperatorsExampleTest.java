@@ -216,11 +216,22 @@ public class FluxAndMonoOperatorsExampleTest {
 
     @Test
     void testOnErrorMap() {
-        var onErrorMap = fluxAndMonoOperatorsExample.onErrorMap();
+        var onErrorMap = fluxAndMonoOperatorsExample.explore_onErrorMap();
 
         StepVerifier.create(onErrorMap)
                 .expectNext("A")
                 .expectError(ServiceException.class)
+                .verify();
+
+    }
+
+    @Test
+    void testDoOnError() {
+        var doOnError = fluxAndMonoOperatorsExample.explore_doOnError();
+
+        StepVerifier.create(doOnError)
+                .expectNext("A")
+                .expectError(RuntimeException.class)
                 .verify();
 
     }

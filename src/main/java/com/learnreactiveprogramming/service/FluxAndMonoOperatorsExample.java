@@ -191,7 +191,7 @@ public class FluxAndMonoOperatorsExample {
                 .log();
     }
 
-    public Flux<String> onErrorMap(){
+    public Flux<String> explore_onErrorMap(){
         return Flux.fromIterable(List.of("A","B","C"))
                 .map(l -> {
                     if(Objects.equals(l, "B"))
@@ -199,6 +199,20 @@ public class FluxAndMonoOperatorsExample {
                     return l;
                 })
                 .onErrorMap(ServiceException::new)
+                .concatWith(Mono.just("D"))
+                .log();
+    }
+
+    public Flux<String> explore_doOnError(){
+        return Flux.fromIterable(List.of("A","B","C"))
+                .map(l -> {
+                    if(Objects.equals(l, "B"))
+                        throw new RuntimeException("Error with letter processing");
+                    return l;
+                })
+                .doOnError(ex -> {
+                    log.error("Runtime Exception was thrown.");
+                })
                 .concatWith(Mono.just("D"))
                 .log();
     }
