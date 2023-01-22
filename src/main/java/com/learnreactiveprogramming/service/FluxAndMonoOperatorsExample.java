@@ -6,6 +6,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @Slf4j
@@ -174,6 +175,20 @@ public class FluxAndMonoOperatorsExample {
                 .log();
     }
 
+    public Flux<String> onErrorContinue(){
+        return Flux.fromIterable(List.of("A","B","C"))
+                .map(l -> {
+                    if(Objects.equals(l, "B"))
+                        throw new RuntimeException("Error with letter processing");
+                    return l;
+                })
+                .onErrorContinue((ex, l) -> {
+                    log.error("Exception thrown : ", ex);
+                    log.info("Letter with exception is : {}", l);
+                })
+                .concatWith(Mono.just("D"))
+                .log();
+    }
     private Flux<String> splitString(String name){
 
         return Flux.fromArray(name.split("")).delayElements(Duration.ofSeconds(1));

@@ -203,4 +203,13 @@ public class FluxAndMonoOperatorsExampleTest {
                 .verifyComplete();
 
     }
+    @Test
+    void testOnErrorContinue() {
+        var onErrorContinue = fluxAndMonoOperatorsExample.onErrorContinue();
+
+        StepVerifier.create(onErrorContinue)
+                .expectNext("A", "C", "D")
+                .verifyComplete();
+
+    }
 }
