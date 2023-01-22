@@ -1,5 +1,6 @@
 package com.learnreactiveprogramming.service;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -7,6 +8,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 
+@Slf4j
 public class FluxAndMonoOperatorsExample {
     Random random = new Random(10);
 
@@ -160,6 +162,15 @@ public class FluxAndMonoOperatorsExample {
         return Flux.fromIterable(List.of("A","B","C"))
                 .concatWith(Mono.error(new RuntimeException()))
                 .onErrorReturn("D")
+                .log();
+    }
+    public Flux<String> onErrorResume(){
+        return Flux.fromIterable(List.of("A","B","C"))
+                .concatWith(Mono.error(new RuntimeException()))
+                .onErrorResume(ex -> {
+                    log.error("Exception thrown : ", ex);
+                    return Mono.just("D");
+                })
                 .log();
     }
 
