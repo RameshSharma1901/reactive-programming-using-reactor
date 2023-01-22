@@ -1,5 +1,6 @@
 package com.learnreactiveprogramming.service;
 
+import com.learnreactiveprogramming.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -186,6 +187,18 @@ public class FluxAndMonoOperatorsExample {
                     log.error("Exception thrown : ", ex);
                     log.info("Letter with exception is : {}", l);
                 })
+                .concatWith(Mono.just("D"))
+                .log();
+    }
+
+    public Flux<String> onErrorMap(){
+        return Flux.fromIterable(List.of("A","B","C"))
+                .map(l -> {
+                    if(Objects.equals(l, "B"))
+                        throw new RuntimeException("Error with letter processing");
+                    return l;
+                })
+                .onErrorMap(ServiceException::new)
                 .concatWith(Mono.just("D"))
                 .log();
     }
