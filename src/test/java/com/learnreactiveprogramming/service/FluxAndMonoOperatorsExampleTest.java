@@ -224,4 +224,14 @@ public class FluxAndMonoOperatorsExampleTest {
                 .verify();
 
     }
+    @Test
+    void testDoOnError() {
+        var doOnError = fluxAndMonoOperatorsExample.explore_doOnError();
+
+        StepVerifier.create(doOnError)
+                .expectNext("A")
+                .expectError(RuntimeException.class)
+                .verify();
+
+    }
 }

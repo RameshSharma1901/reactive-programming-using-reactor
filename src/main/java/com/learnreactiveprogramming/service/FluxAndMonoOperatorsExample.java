@@ -202,6 +202,19 @@ public class FluxAndMonoOperatorsExample {
                 .concatWith(Mono.just("D"))
                 .log();
     }
+
+    public Flux<String> explore_doOnError(){
+        return Flux.fromIterable(List.of("A","B","C"))
+                .flatMap(s -> {
+                    if(s.equals("B")){
+                        return Flux.error(new RuntimeException());
+                    }
+                    return Flux.just(s);
+                }).doOnError(ex -> {
+                    log.error("You are in do on error");
+                }).log();
+
+    }
     private Flux<String> splitString(String name){
 
         return Flux.fromArray(name.split("")).delayElements(Duration.ofSeconds(1));
