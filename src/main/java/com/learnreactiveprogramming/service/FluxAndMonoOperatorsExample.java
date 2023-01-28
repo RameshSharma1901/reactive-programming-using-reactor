@@ -191,7 +191,7 @@ public class FluxAndMonoOperatorsExample {
                 .log();
     }
 
-    public Flux<String> onErrorMap(){
+    public Flux<String> explore_onErrorMap(){
         return Flux.fromIterable(List.of("A","B","C"))
                 .map(l -> {
                     if(Objects.equals(l, "B"))

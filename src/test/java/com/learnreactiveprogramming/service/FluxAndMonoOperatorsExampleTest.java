@@ -216,7 +216,7 @@ public class FluxAndMonoOperatorsExampleTest {
 
     @Test
     void testOnErrorMap() {
-        var onErrorMap = fluxAndMonoOperatorsExample.onErrorMap();
+        var onErrorMap = fluxAndMonoOperatorsExample.explore_onErrorMap();
 
         StepVerifier.create(onErrorMap)
                 .expectNext("A")
