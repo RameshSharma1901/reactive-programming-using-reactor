@@ -205,16 +205,27 @@ public class FluxAndMonoOperatorsExample {
 
     public Flux<String> explore_doOnError(){
         return Flux.fromIterable(List.of("A","B","C"))
-                .map(l -> {
-                    if(Objects.equals(l, "B"))
-                        throw new RuntimeException("Error with letter processing");
-                    return l;
-                })
-                .doOnError(ex -> {
-                    log.error("Runtime Exception was thrown.");
-                })
-                .concatWith(Mono.just("D"))
-                .log();
+                .flatMap(s -> {
+                    if(s.equals("B")){
+                        return Flux.error(new RuntimeException());
+                    }
+                    return Flux.just(s);
+                }).doOnError(ex -> {
+                    log.error("You are in do on error");
+                }).log();
+
+    }
+
+
+    public Mono<String> exception_mono_onErrorContinue(String input) {
+        return Mono.just(input)
+                .map(s -> {
+                    if(s.equals("abc")){
+                        throw  new RuntimeException();
+                    }else return s;
+                }).onErrorContinue((ex, s)->{
+                    log.error("Exception thrown while processing string {}",s,ex);
+                });
     }
     private Flux<String> splitString(String name){
 

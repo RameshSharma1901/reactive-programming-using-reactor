@@ -224,7 +224,6 @@ public class FluxAndMonoOperatorsExampleTest {
                 .verify();
 
     }
-
     @Test
     void testDoOnError() {
         var doOnError = fluxAndMonoOperatorsExample.explore_doOnError();
@@ -234,5 +233,19 @@ public class FluxAndMonoOperatorsExampleTest {
                 .expectError(RuntimeException.class)
                 .verify();
 
+    }
+
+    @Test
+    void testOnErrorContinueMono() {
+        var exception_mono_onErrorContinue = fluxAndMonoOperatorsExample.exception_mono_onErrorContinue("abc");
+
+        StepVerifier.create(exception_mono_onErrorContinue)
+                .verifyComplete();
+
+        exception_mono_onErrorContinue = fluxAndMonoOperatorsExample.exception_mono_onErrorContinue("reactor");
+
+        StepVerifier.create(exception_mono_onErrorContinue)
+                .expectNext("reactor")
+                .verifyComplete();
     }
 }
