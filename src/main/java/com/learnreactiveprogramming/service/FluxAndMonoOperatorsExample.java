@@ -215,6 +215,18 @@ public class FluxAndMonoOperatorsExample {
                 }).log();
 
     }
+
+
+    public Mono<String> exception_mono_onErrorContinue(String input) {
+        return Mono.just(input)
+                .map(s -> {
+                    if(s.equals("abc")){
+                        throw  new RuntimeException();
+                    }else return s;
+                }).onErrorContinue((ex, s)->{
+                    log.error("Exception thrown while processing string {}",s,ex);
+                });
+    }
     private Flux<String> splitString(String name){
 
         return Flux.fromArray(name.split("")).delayElements(Duration.ofSeconds(1));
