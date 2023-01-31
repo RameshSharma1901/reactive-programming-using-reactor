@@ -1,5 +1,6 @@
 package com.learnreactiveprogramming.service;
 
+import com.learnreactiveprogramming.domain.Movie;
 import com.learnreactiveprogramming.exception.ReviewException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +11,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -20,17 +23,23 @@ class MovieReactiveServiceUsingMockitoTest {
     private ReviewService reviewService;
     @InjectMocks
     private MovieReactiveService movieReactiveService;
+
     @Test
-    public void explore_retryOnException(){
+    public void explore_retryOnException() {
         //given
+        String errMsg = "Something Wrong Happened";
         Mockito.when(movieInfoService.retrieveMoviesFlux())
                 .thenCallRealMethod();
-        Mockito.when(reviewService.retrieveReviews(ArgumentMatchers.anyLong()))
+        Mockito.when(reviewService.retrieveReviewsFlux(ArgumentMatchers.anyLong()))
                 .thenThrow(ReviewException.class);
         //when
-        movieReactiveService.getAllMovies();
+        Flux<Movie> movieFlux = movieReactiveService.getAllMoviesWithRetry();
         //then
-        Mockito.verify(reviewService, Mockito.times(0))
-                .retrieveReviews(ArgumentMatchers.anyLong());
+        StepVerifier.create(movieFlux)
+                .expectError(RuntimeException.class)
+                .verify();
+
+        Mockito.verify(reviewService, Mockito.times(2))
+                .retrieveReviewsFlux(ArgumentMatchers.anyLong());
     }
 }

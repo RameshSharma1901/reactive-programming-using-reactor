@@ -26,6 +26,14 @@ public class MovieReactiveService {
         });
     }
 
+    public Flux<Movie> getAllMoviesWithRetry(){
+        return movieInfoService.retrieveMoviesFlux()
+                .flatMap(movieInfo -> {
+                    var monoReviewList = reviewService.retrieveReviewsFlux(movieInfo.getMovieInfoId()).collectList();
+                    return monoReviewList.map(reviews -> new Movie(movieInfo, reviews));
+                }).retry(1).log();
+    }
+
     public Mono<Movie> getMovieByIdV1(long movieId){
         return movieInfoService.retrieveMovieInfoMonoUsingId(movieId)
                 .flatMap(movieInfo -> {
