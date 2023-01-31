@@ -34,6 +34,14 @@ public class MovieReactiveService {
                 }).retry(1).log();
     }
 
+    public Flux<Movie> getAllMoviesWithRepeat(){
+        return movieInfoService.retrieveMoviesFlux()
+                .flatMap(movieInfo -> {
+                    var monoReviewList = reviewService.retrieveReviewsFlux(movieInfo.getMovieInfoId()).collectList();
+                    return monoReviewList.map(reviews -> new Movie(movieInfo, reviews));
+                }).repeat(2).log();
+    }
+
     public Mono<Movie> getMovieByIdV1(long movieId){
         return movieInfoService.retrieveMovieInfoMonoUsingId(movieId)
                 .flatMap(movieInfo -> {

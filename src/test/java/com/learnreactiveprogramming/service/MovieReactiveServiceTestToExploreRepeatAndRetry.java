@@ -42,4 +42,23 @@ class MovieReactiveServiceUsingMockitoTest {
         Mockito.verify(reviewService, Mockito.times(2))
                 .retrieveReviewsFlux(ArgumentMatchers.anyLong());
     }
+
+    @Test
+    public void explore_repeat() {
+        //given
+        String errMsg = "Something Wrong Happened";
+        Mockito.when(movieInfoService.retrieveMoviesFlux())
+                .thenCallRealMethod();
+        Mockito.when(reviewService.retrieveReviewsFlux(ArgumentMatchers.anyLong()))
+                .thenCallRealMethod();
+        //when
+        Flux<Movie> movieFlux = movieReactiveService.getAllMoviesWithRepeat();
+        //then
+        StepVerifier.create(movieFlux)
+                .expectNextCount(9)
+                .verifyComplete();
+
+        Mockito.verify(reviewService, Mockito.times(9))
+                .retrieveReviewsFlux(ArgumentMatchers.anyLong());
+    }
 }
