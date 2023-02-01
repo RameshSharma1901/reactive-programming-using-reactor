@@ -56,7 +56,7 @@ public class FluxAndMonoOperatorsExampleTest {
 
     @Test
     void testNameFluxFlatMap() {
-        var namesFluxFlatMap = fluxAndMonoOperatorsExample.namesFluxFlatMap();
+        var namesFluxFlatMap = fluxAndMonoOperatorsExample.namesFluxFlatMapSequential();
 
         StepVerifier.create(namesFluxFlatMap)
                 .expectNext("r", "a","m","e","s","h","s","h","a","r","m","a")
