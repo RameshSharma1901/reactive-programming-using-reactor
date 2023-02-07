@@ -2,9 +2,12 @@ package com.learnreactiveprogramming.service;
 
 import com.learnreactiveprogramming.domain.Movie;
 import com.learnreactiveprogramming.domain.MovieInfo;
+import com.learnreactiveprogramming.domain.Revenue;
 import com.learnreactiveprogramming.domain.Review;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 
@@ -13,9 +16,12 @@ public class MovieReactiveService {
     private MovieInfoService movieInfoService;
     private ReviewService reviewService;
 
-    public MovieReactiveService(MovieInfoService movieInfoService, ReviewService reviewService) {
+    private RevenueService revenueService;
+
+    public MovieReactiveService(MovieInfoService movieInfoService, ReviewService reviewService, RevenueService revenueService) {
         this.movieInfoService = movieInfoService;
         this.reviewService = reviewService;
+        this.revenueService = revenueService;
     }
 
     public Flux<Movie> getAllMovies(){
@@ -56,5 +62,18 @@ public class MovieReactiveService {
         Flux<Review> reviewFlux = reviewService.retrieveReviewsFlux(movieId);
         Mono<List<Review>> listReviewMono = reviewFlux.collectList();
         return movieInfoMono.zipWith(listReviewMono, Movie::new);
+    }
+
+    public Mono<Movie> getMovieWithRevenueById(long movieId){
+        Mono<MovieInfo> movieInfoMono =
+                movieInfoService.retrieveMovieInfoMonoUsingId(movieId);
+        Flux<Review> reviewFlux = reviewService.retrieveReviewsFlux(movieId);
+        Mono<List<Review>> listReviewMono = reviewFlux.collectList();
+        Mono<Revenue> revenueMono = Mono.fromCallable(()-> revenueService.getRevenue(movieId))
+                .subscribeOn(Schedulers.boundedElastic());
+        return movieInfoMono.zipWith(listReviewMono, Movie::new).zipWith(revenueMono, (movie, revenue)->{
+             movie.setRevenue(revenue);
+             return movie;
+        }).log();
     }
 }
