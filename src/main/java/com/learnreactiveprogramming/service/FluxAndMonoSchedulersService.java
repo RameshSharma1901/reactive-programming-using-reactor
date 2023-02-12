@@ -2,6 +2,7 @@ package com.learnreactiveprogramming.service;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.ParallelFlux;
 import reactor.core.scheduler.Schedulers;
 
@@ -22,6 +23,28 @@ public class FluxAndMonoSchedulersService {
                 .runOn(Schedulers.parallel())
                 .map(this::upperCase)
                 .log();
+    }
+
+    public Flux<String> explore_parallelismUsingFlatMap(){
+        return Flux.fromIterable(namesList)
+                .flatMap(name -> Mono.just(name)
+                        .map(this::upperCase)
+                        .subscribeOn(Schedulers.parallel()))
+                .log();
+    }
+
+    public Flux<String> explore_parallelismUsingFlatMap_withMergeWithOperator(){
+        var namesFlux = Flux.fromIterable(namesList)
+                .flatMap(name -> Mono.just(name)
+                        .map(this::upperCase)
+                        .subscribeOn(Schedulers.parallel()))
+                .log();
+        var names1Flux = Flux.fromIterable(namesList1)
+                .flatMap(name -> Mono.just(name)
+                        .map(this::upperCase)
+                        .subscribeOn(Schedulers.parallel()))
+                .log();
+        return names1Flux.mergeWith(namesFlux);
     }
     private String upperCase(String name) {
         delay(1000);
