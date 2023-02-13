@@ -24,11 +24,11 @@ public class MovieInfoService {
                 .bodyToFlux(MovieInfo.class);
     }
 
-    public Mono<MovieInfo> retrieveMoviesByIdUsingWebClient(int movieId){
+    public Mono<MovieInfo> retrieveMovieInfoById_RestClient(int movieId){
         return webClient.get()
                 .uri("/v1/movie_infos/{movieId}", movieId)
                 .retrieve()
-                .bodyToMono(MovieInfo.class);
+                .bodyToMono(MovieInfo.class).log();
     }
     public  Flux<MovieInfo> retrieveMoviesFlux(){
 

@@ -8,8 +8,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class MovieInfoServiceTest {
     private static WebClient webClient;
     private static MovieInfoService movieInfoService;
@@ -29,10 +27,14 @@ class MovieInfoServiceTest {
     }
 
     @Test
-    public void retrieveMoviesByIdUsingWebClient() {
-        Mono<MovieInfo> movieInfoFlux = movieInfoService.retrieveMoviesByIdUsingWebClient(2);
+    public void test_retrieveMovieInfoById_RestClient() {
+        //given
+        int movieId = 1;
+        //when
+        Mono<MovieInfo> movieInfoFlux = movieInfoService.retrieveMovieInfoById_RestClient(movieId);
+        //then
         StepVerifier.create(movieInfoFlux)
-                .expectNextCount(1)
+                .expectNextMatches(m -> m.getName().equals("Batman Begins"))
                 .verifyComplete();
     }
 }
