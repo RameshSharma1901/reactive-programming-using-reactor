@@ -11,7 +11,7 @@ class MovieReactiveServiceTest {
     ReviewServiceInMemoryImpl reviewServiceInMemoryImpl = new ReviewServiceInMemoryImpl();
 
     RevenueService revenueService = new RevenueService();
-    MovieReactiveServiceInMemoryImpl movieReactiveService = new MovieReactiveServiceInMemoryImpl(movieInfoService, reviewServiceInMemoryImpl, revenueService);
+    MovieReactiveServiceImpl movieReactiveService = new MovieReactiveServiceImpl(movieInfoService, reviewServiceInMemoryImpl, revenueService);
     @Test
     void getAllMovies() {
 
