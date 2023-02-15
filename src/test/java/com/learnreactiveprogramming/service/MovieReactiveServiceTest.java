@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MovieReactiveServiceTest {
 
-    MovieInfoService movieInfoService = new MovieInfoService();
+    MovieInfoService movieInfoService = new MovieInfoServiceInMemoryImpl();
     ReviewServiceInMemoryImpl reviewServiceInMemoryImpl = new ReviewServiceInMemoryImpl();
 
     RevenueService revenueService = new RevenueService();

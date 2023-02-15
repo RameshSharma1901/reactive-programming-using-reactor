@@ -4,16 +4,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class ReviewServiceWithRestClientImplTest {
+class ReviewServiceRestClientImplTest {
 
     @Test
     void retrieveReviewsFlux_RestClient() {
         //given
         var movieInfoId = 2L;
         var webClient = WebClient.builder().baseUrl("http://localhost:8080/movies").build();
-        var reviewService = new ReviewServiceWithRestClientImpl(webClient);
+        var reviewService = new ReviewServiceRestClientImpl(webClient);
         //when
         var reviewFlux = reviewService.retrieveReviewsFlux(movieInfoId);
         //then

@@ -7,7 +7,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 
 @AllArgsConstructor
-public class ReviewServiceWithRestClientImpl implements ReviewService {
+public class ReviewServiceRestClientImpl implements ReviewService {
     private WebClient webClient;
 
     @Override

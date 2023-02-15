@@ -9,18 +9,17 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 class MovieInfoServiceTest {
-    private static WebClient webClient;
     private static MovieInfoService movieInfoService;
     @BeforeAll
     static void setUp() {
-       webClient = WebClient.builder()
-               .baseUrl("http://localhost:8080/movies")
-               .build();
-       movieInfoService = new MovieInfoService(webClient);
+        WebClient webClient = WebClient.builder()
+                .baseUrl("http://localhost:8080/movies")
+                .build();
+       movieInfoService = new MovieInfoServieRestClientImpl(webClient);
     }
     @Test
     public void retrieveMoviesFluxUsingWebClient() {
-        Flux<MovieInfo> movieInfoFlux = movieInfoService.retrieveMoviesFluxUsingWebClient();
+        Flux<MovieInfo> movieInfoFlux = movieInfoService.retrieveMoviesFlux();
         StepVerifier.create(movieInfoFlux)
                 .expectNextCount(7)
                 .verifyComplete();
@@ -31,7 +30,7 @@ class MovieInfoServiceTest {
         //given
         int movieId = 1;
         //when
-        Mono<MovieInfo> movieInfoFlux = movieInfoService.retrieveMovieInfoById_RestClient(movieId);
+        Mono<MovieInfo> movieInfoFlux = movieInfoService.retrieveMovieInfoMonoUsingId(movieId);
         //then
         StepVerifier.create(movieInfoFlux)
                 .expectNextMatches(m -> m.getName().equals("Batman Begins"))
