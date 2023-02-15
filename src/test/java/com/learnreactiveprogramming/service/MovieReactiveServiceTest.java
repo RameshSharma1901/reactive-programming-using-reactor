@@ -11,7 +11,7 @@ class MovieReactiveServiceTest {
     ReviewServiceInMemoryImpl reviewServiceInMemoryImpl = new ReviewServiceInMemoryImpl();
 
     RevenueService revenueService = new RevenueService();
-    MovieReactiveService movieReactiveService = new MovieReactiveService(movieInfoService, reviewServiceInMemoryImpl, revenueService);
+    MovieReactiveServiceInMemoryImpl movieReactiveService = new MovieReactiveServiceInMemoryImpl(movieInfoService, reviewServiceInMemoryImpl, revenueService);
     @Test
     void getAllMovies() {
 
@@ -34,7 +34,7 @@ class MovieReactiveServiceTest {
     @Test
     void getMovieById_usingFlatMap() {
 
-        StepVerifier.create(movieReactiveService.getMovieByIdV1(102))
+        StepVerifier.create(movieReactiveService.getMovieById(102))
                 .assertNext(movie -> {
                     assertEquals("Batman Begins", movie.getMovie().getName());
                     assertEquals(2, movie.getReviewList().size());

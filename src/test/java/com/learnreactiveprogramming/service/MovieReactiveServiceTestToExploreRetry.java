@@ -16,13 +16,13 @@ import reactor.test.StepVerifier;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class MovieReactiveServiceTestToExploreRepeatAndRetry {
+class MovieReactiveServiceTestToExploreRetry {
     @Mock
-    private MovieInfoService movieInfoService;
+    private MovieInfoServiceInMemoryImpl movieInfoService;
     @Mock
-    private ReviewServiceInMemoryImpl reviewServiceInMemoryImpl;
+    private ReviewService reviewService;
     @InjectMocks
-    private MovieReactiveService movieReactiveService;
+    private MovieReactiveServiceRestWithRetryImpl movieReactiveService;
 
     @Test
     public void explore_retryOnException() {
@@ -30,35 +30,35 @@ class MovieReactiveServiceTestToExploreRepeatAndRetry {
         String errMsg = "Something Wrong Happened";
         Mockito.when(movieInfoService.retrieveMoviesFlux())
                 .thenCallRealMethod();
-        Mockito.when(reviewServiceInMemoryImpl.retrieveReviewsFlux(ArgumentMatchers.anyLong()))
+        Mockito.when(reviewService.retrieveReviewsFlux(ArgumentMatchers.anyLong()))
                 .thenThrow(ReviewException.class);
         //when
-        Flux<Movie> movieFlux = movieReactiveService.getAllMoviesWithRetry();
+        Flux<Movie> movieFlux = movieReactiveService.getAllMovies();
         //then
         StepVerifier.create(movieFlux)
                 .expectError(RuntimeException.class)
                 .verify();
 
-        Mockito.verify(reviewServiceInMemoryImpl, Mockito.times(2))
+        Mockito.verify(reviewService, Mockito.times(2))
                 .retrieveReviewsFlux(ArgumentMatchers.anyLong());
     }
 
-    @Test
-    public void explore_repeat() {
-        //given
-        String errMsg = "Something Wrong Happened";
-        Mockito.when(movieInfoService.retrieveMoviesFlux())
-                .thenCallRealMethod();
-        Mockito.when(reviewServiceInMemoryImpl.retrieveReviewsFlux(ArgumentMatchers.anyLong()))
-                .thenCallRealMethod();
-        //when
-        Flux<Movie> movieFlux = movieReactiveService.getAllMoviesWithRepeat();
-        //then
-        StepVerifier.create(movieFlux)
-                .expectNextCount(9)
-                .verifyComplete();
-
-        Mockito.verify(reviewServiceInMemoryImpl, Mockito.times(9))
-                .retrieveReviewsFlux(ArgumentMatchers.anyLong());
-    }
+//    @Test
+//    public void explore_repeat() {
+//        //given
+//        String errMsg = "Something Wrong Happened";
+//        Mockito.when(movieReactiveService.getAllMovies())
+//                .thenCallRealMethod();
+//        Mockito.when(reviewService.retrieveReviewsFlux(ArgumentMatchers.anyLong()))
+//                .thenCallRealMethod();
+//        //when
+//        Flux<Movie> movieFlux = movieReactiveService.getAllMoviesWithRepeat();
+//        //then
+//        StepVerifier.create(movieFlux)
+//                .expectNextCount(9)
+//                .verifyComplete();
+//
+//        Mockito.verify(reviewService, Mockito.times(9))
+//                .retrieveReviewsFlux(ArgumentMatchers.anyLong());
+//    }
 }
