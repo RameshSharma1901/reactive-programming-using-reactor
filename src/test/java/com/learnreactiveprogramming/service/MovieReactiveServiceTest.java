@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class MovieReactiveServiceTest {
 
     MovieInfoService movieInfoService = new MovieInfoService();
-    ReviewService reviewService = new ReviewService();
+    ReviewServiceInMemoryImpl reviewServiceInMemoryImpl = new ReviewServiceInMemoryImpl();
 
     RevenueService revenueService = new RevenueService();
-    MovieReactiveService movieReactiveService = new MovieReactiveService(movieInfoService, reviewService, revenueService);
+    MovieReactiveService movieReactiveService = new MovieReactiveService(movieInfoService, reviewServiceInMemoryImpl, revenueService);
     @Test
     void getAllMovies() {
 

@@ -16,11 +16,11 @@ import reactor.test.StepVerifier;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class MovieReactiveServiceUsingMockitoTest {
+class MovieReactiveServiceTestToExploreRepeatAndRetry {
     @Mock
     private MovieInfoService movieInfoService;
     @Mock
-    private ReviewService reviewService;
+    private ReviewServiceInMemoryImpl reviewServiceInMemoryImpl;
     @InjectMocks
     private MovieReactiveService movieReactiveService;
 
@@ -30,7 +30,7 @@ class MovieReactiveServiceUsingMockitoTest {
         String errMsg = "Something Wrong Happened";
         Mockito.when(movieInfoService.retrieveMoviesFlux())
                 .thenCallRealMethod();
-        Mockito.when(reviewService.retrieveReviewsFlux(ArgumentMatchers.anyLong()))
+        Mockito.when(reviewServiceInMemoryImpl.retrieveReviewsFlux(ArgumentMatchers.anyLong()))
                 .thenThrow(ReviewException.class);
         //when
         Flux<Movie> movieFlux = movieReactiveService.getAllMoviesWithRetry();
@@ -39,7 +39,7 @@ class MovieReactiveServiceUsingMockitoTest {
                 .expectError(RuntimeException.class)
                 .verify();
 
-        Mockito.verify(reviewService, Mockito.times(2))
+        Mockito.verify(reviewServiceInMemoryImpl, Mockito.times(2))
                 .retrieveReviewsFlux(ArgumentMatchers.anyLong());
     }
 
@@ -49,7 +49,7 @@ class MovieReactiveServiceUsingMockitoTest {
         String errMsg = "Something Wrong Happened";
         Mockito.when(movieInfoService.retrieveMoviesFlux())
                 .thenCallRealMethod();
-        Mockito.when(reviewService.retrieveReviewsFlux(ArgumentMatchers.anyLong()))
+        Mockito.when(reviewServiceInMemoryImpl.retrieveReviewsFlux(ArgumentMatchers.anyLong()))
                 .thenCallRealMethod();
         //when
         Flux<Movie> movieFlux = movieReactiveService.getAllMoviesWithRepeat();
@@ -58,7 +58,7 @@ class MovieReactiveServiceUsingMockitoTest {
                 .expectNextCount(9)
                 .verifyComplete();
 
-        Mockito.verify(reviewService, Mockito.times(9))
+        Mockito.verify(reviewServiceInMemoryImpl, Mockito.times(9))
                 .retrieveReviewsFlux(ArgumentMatchers.anyLong());
     }
 }
